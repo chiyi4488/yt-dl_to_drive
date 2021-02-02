@@ -1,30 +1,21 @@
-name: Copy Youtube video to Google Drive.
+name: ci
 
 on: [push, pull_request]
 
 jobs:
-  download:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
+
       - name: download
         run: |
-          git config --local user.email "chiyi4869@gmail.com"
-          git config --local user.name "chiyi4488"
+          git config --local user.email "justjavac@gmail.com"
+          git config --local user.name "迷渡"
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git pull --rebase
-          sudo youtube-dl -f mp3 --config-location config.txt
+          ./bin/youtube-dl --config-location config.txt
           git add .
-          git commit -m "Download Youtube Video"
+          git commit -m "download youtube video"
           git push
-      - name: Download and install rclone
-        run: sudo curl https://rclone.org/install.sh | sudo bash
-      - name: Decrypt config
-        run: |
-          bash decrypt.sh
-        env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-      - name: Start Mission
-        run: |
-          bash copy.sh
