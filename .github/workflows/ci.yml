@@ -15,26 +15,18 @@ jobs:
           git config --local user.name "chiyi4488"
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git pull --rebase
-          /bin/youtube-dl -f mp3 --config-location config.txt
+          git update-index --chmod=+x ./bin/youtube-dl
+          ./bin/youtube-dl -f mp3 --config-location config.txt
           git add .
           git commit -m "Download Youtube Video"
           git push
-  gd_copy:
-        name: Copy downloads folder to Google Drive
-        runs-on: ubuntu-latest
-        steps:
-        - name: check
-          uses: actions/checkout@master
-        - name: Download and install rclone
+      - name: Download and install rclone
           run: sudo curl https://rclone.org/install.sh | sudo bash
-        - name: Decrypt config
-          run: |
-              bash decrypt.sh
-          env:
-              GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-        - name: Start Mission
-          run: |
-              bash copy.sh
-          env:
-              DRIVE_SOURCE:   ${{ secrets.TEMPSCR }}
-              DRIVE_TARGET:   ${{ secrets.TEMPTAR }}
+      - name: Decrypt config
+        run: |
+          bash decrypt.sh
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Start Mission
+        run: |
+          bash copy.sh
