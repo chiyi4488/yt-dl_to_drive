@@ -14,6 +14,7 @@ jobs:
           git config --local user.name "chiyi4488"
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git pull --rebase
+          sudo apt-get install youtube-dl
           youtube-dl -f mp3 --config-location config.txt
           git add .
           git commit -m "Download Youtube Video"
