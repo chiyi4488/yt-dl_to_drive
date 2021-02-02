@@ -21,12 +21,13 @@ jobs:
           git commit -m "Download Youtube Video"
           git push
       - name: Download and install rclone
-          run: sudo curl https://rclone.org/install.sh | sudo bash
+          run: |
+            sudo curl https://rclone.org/install.sh | sudo bash
       - name: Decrypt config
-        run: |
-          bash decrypt.sh
-        env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          run: |
+            bash decrypt.sh
+          env:
+            GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       - name: Start Mission
-        run: |
-          bash copy.sh
+          run: |
+            bash copy.sh
